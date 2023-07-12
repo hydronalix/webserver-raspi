@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask import send_file
 import os
 import re
 
@@ -37,6 +38,16 @@ def my_form_post():
     elif checkIP(ipstring) == False or checkIP(gsipstring) == False:
         print("One or more IP addresses invalid - please try again")
         return 'Failed due to invalid IP address (make sure to enter in the form xxx.xxx.xxx.xxx)'
+        ##error check
+
+
+@app.route('/download')
+def downloadFile ():
+    #For windows you need to use drive name [ex: F:/Example.pdf]
+    path = "/home/hydronalix/Documents/HydroCode/TrasnferProj/test.bin"
+    return send_file(path, as_attachment=True)
+
+
 
 
 if __name__ == '__main__':
