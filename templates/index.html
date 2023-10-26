@@ -1,30 +1,33 @@
 <html>
-<body>
-    
-    <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/v1489204175/xdhcrlehwv5epzho4k60.png" alt="An example image">
+    <body>
+    <p> webserver functionality still in beta! not all things have been implemented! </p>
 
-<h1>Configure RaspPi</h1>
-</body>
-<body>
-    <form method = "POST" >
-        <p>Enter in AP IP</p>
-        <input name = "ipstring">
-    
-        <p>Enter in GS IP</p>
-        <input name = "gsipstring">
+        <h1>Configure RaspPi</h1>
+        <form action="{{ url_for('configure_pi') }}" method="POST">
+            <p>Enter in AP IP</p>
+            <input name = "ipstring">
+            <p>Enter in GS IP</p>
+            <input name = "gsipstring">
+            <p>Enter in Hostname</p>
+            <input name = "hostname">
+            <br>
+            <input type = "submit" value = submit>
+        </form>
 
-        <p>Enter in Hostname</p>
-        <input name = "hostname">
+        <h1>Configure throttle limits</h1>
+        <form action="{{ url_for('configure_throttle') }}" method="POST">
+            <p>Maximum throttle PWM</p>
+            <input name = "thrmax">
+            <p>Limp mode throttle PWM</p>
+            <input name = "limp">
+            <input type="submit">
+        </form>
+        
+        <h2>Click Here to Download Telem Data (beta!) </h2>
         <br>
-        <br>
-        <input type = "submit" value="Submit">
-    </form>
-    
-    <h2>Click here to download Telem Data</h2>
-    <br> 
-    <form>
-        <input type="button" onclick="window.location.href='http://192.168.50.41:5000/download';" value="Download" />
-      </form>
+        <form>
+            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/download';" value="Download" />
+        </form>
 
-</body>
+    </body>
 </html>
