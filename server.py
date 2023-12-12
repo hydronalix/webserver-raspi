@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from flask import send_file
+from flask import redirect
+from flask import url_for
 import os
 import re
 import sys
@@ -21,7 +23,7 @@ def checkIP(ip):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', tmax=1600, tlimp='1500')
 
 @app.route('/configure_pi', methods=['POST'])
 def configure_pi():
@@ -63,7 +65,13 @@ def downloadFile():
     path = "lawnmower.BIN"
     return send_file(path, as_attachment=True)
 
+@app.route('/light_on')
+def light_on():
+    bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
+    #testing this out now
+    return 'successfully turned lights on, if already on still on, will change this later'
+
+
 if __name__ == '__main__':
     app.run(localip)
    
-

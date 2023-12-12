@@ -14,6 +14,12 @@
             <input type = "submit" value = submit>
         </form>
 
+        <br>
+        <h1>Current throttle lmits</h1>
+            <p>Maximum throttle PWM: {{tmax}}</p>
+            <p>Limp mode throttle PWM: {{tlimp}}</p>
+        <br>
+
         <h1>Configure throttle limits</h1>
         <form action="{{ url_for('configure_throttle') }}" method="POST">
             <p>Maximum throttle PWM</p>
@@ -27,6 +33,11 @@
         <br>
         <form>
             <input type="button" onclick="window.location.href='http://192.168.100.101:5000/download';" value="Download" />
+        </form>
+
+        <h2>Turn Lights On</h2>
+        <form>
+            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/light_on';" value="Turn on">
         </form>
 
     </body>
