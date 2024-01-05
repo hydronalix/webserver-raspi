@@ -7,6 +7,7 @@ import re
 import sys
 import smbus
 import struct
+import time
 
 bus = smbus.SMBus(1)
 
@@ -23,7 +24,15 @@ def checkIP(ip):
 
 @app.route('/')
 def index():
-    return render_template('index.html', tmax=1600, tlimp='1500')
+    temp = bus.read_i2c_block_data(0x3d, 0, 5)
+    tmax = temp[0] | temp[1] << 8
+    tlimp= temp[2] | temp[3] << 8
+    tlightvalue = temp[4] 
+    if tlightvalue == 255 :
+        lightstatus = "on"
+    else:
+        lightstatus = "off"
+    return render_template('index.html', tmax=tmax, tlimp=tlimp, lightstatus=lightstatus)
 
 @app.route('/configure_pi', methods=['POST'])
 def configure_pi():
@@ -67,10 +76,20 @@ def downloadFile():
 
 @app.route('/light_on')
 def light_on():
-    bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
-    #testing this out now
-    return 'successfully turned lights on, if already on still on, will change this later'
+    bus.write_byte_data(0x3d, 4, 1)
+    return 'successfully turned lights on'
 
+@app.route('/light_off')
+def light_off():
+    bus.write_byte_data(0x3d, 4, 0)
+    return 'successfully turned lights off'
+
+@app.route('/pair')
+def pairing():
+    bus.write_byte_data(0x3d, 5, 1)
+    time.sleep(2)
+    bus.write_byte_data(0x3d, 5, 0)
+    return 'attempting to pair, check transmitter to see if it was successful'
 
 if __name__ == '__main__':
     app.run(localip)

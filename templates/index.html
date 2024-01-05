@@ -28,16 +28,24 @@
             <input name = "limp">
             <input type="submit">
         </form>
-        
-        <h2>Click Here to Download Telem Data (beta!) </h2>
         <br>
+
+        <!-- <h2>Click Here to Download Telem Data (beta!) </h2>
         <form>
             <input type="button" onclick="window.location.href='http://192.168.100.101:5000/download';" value="Download" />
         </form>
+        <br> -->
 
-        <h2>Turn Lights On</h2>
+        <h2>Toggle Lights</h2>
+        <p>Lights are {{lightstatus}}</p>
         <form>
             <input type="button" onclick="window.location.href='http://192.168.100.101:5000/light_on';" value="Turn on">
+            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/light_off';" value="Turn off">
+        </form>
+
+        <h2>Pair Transmitter</h2>
+        <form>
+            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/pair';" value="Pair">
         </form>
 
     </body>
