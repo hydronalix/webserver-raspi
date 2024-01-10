@@ -74,6 +74,14 @@ def downloadFile():
     path = "lawnmower.BIN"
     return send_file(path, as_attachment=True)
 
+app.route('/calibrate')
+def calibrate():
+    bus.write_byte_data(0x3d, 6, 1)
+    time.sleep(2)
+    bus.write_byte_data(0x3d, 6, 0)
+    return 'Calibrating'
+
+
 @app.route('/light_on')
 def light_on():
     bus.write_byte_data(0x3d, 4, 1)
