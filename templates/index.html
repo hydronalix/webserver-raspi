@@ -31,8 +31,8 @@
         <br>
 
         <h1>Calibrate throttle</h1>
-        <form>
-            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/calibrate';" value="Calibrate">
+        <form action="{{ url_for('calibrate') }}" method="POST">
+		<input type="submit" value="Calibrate">
         </form>
         <br>
 
@@ -43,15 +43,17 @@
         <br> -->
 
         <h2>Toggle Lights</h2>
-        <p>Lights are {{lightstatus}}</p>
-        <form>
-            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/light_on';" value="Turn on">
-            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/light_off';" value="Turn off">
+        <form action="{{ url_for('light_on') }}" method="POST">
+		<input type="submit" value="on">
+        </form>
+	<form action="{{ url_for('light_off') }}" method="POST">
+		<input type="submit" value="off">
         </form>
 
+
         <h2>Pair Transmitter</h2>
-        <form>
-            <input type="button" onclick="window.location.href='http://192.168.100.101:5000/pair';" value="Pair">
+        <form action="{{ url_for('pair') }}" method="POST">
+		<input type="submit" value="Pair">
         </form>
 
     </body>

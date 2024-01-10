@@ -70,11 +70,11 @@ def configure_throttle():
         return 'bad throttle max / limp values'
 
 @app.route('/download')
-def downloadFile():
+def download():
     path = "lawnmower.BIN"
     return send_file(path, as_attachment=True)
 
-app.route('/calibrate')
+@app.route('/calibrate', methods=['POST'])
 def calibrate():
     bus.write_byte_data(0x3d, 6, 1)
     time.sleep(2)
@@ -82,18 +82,18 @@ def calibrate():
     return 'Calibrating'
 
 
-@app.route('/light_on')
+@app.route('/light_on', methods=['POST'])
 def light_on():
     bus.write_byte_data(0x3d, 4, 1)
     return 'successfully turned lights on'
 
-@app.route('/light_off')
+@app.route('/light_off', methods=['POST'])
 def light_off():
     bus.write_byte_data(0x3d, 4, 0)
     return 'successfully turned lights off'
 
-@app.route('/pair')
-def pairing():
+@app.route('/pair', methods=['POST'])
+def pair():
     bus.write_byte_data(0x3d, 5, 1)
     time.sleep(2)
     bus.write_byte_data(0x3d, 5, 0)
