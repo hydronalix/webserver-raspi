@@ -43,7 +43,7 @@ def configure_pi():
     
     #formatting bash command
     text = ' ' + ipstring + ' ' + gsipstring + ' ' + hostname
-    cmd = 'sudo sh flashpi.sh ' + text
+    cmd = 'sudo bash flashpi ' + text
 
     #debug
     print("DEBUG: Command is " + cmd)
