@@ -43,7 +43,7 @@
         <br> -->
 
         <h2>Toggle Lights</h2>
-        <p>Current light status: {{light_status}}</p>
+        <p>Current light status: {{lightstatus}}</p>
         <form action="{{ url_for('light_on') }}" method="POST">
 		<input type="submit" value="on">
         </form>
@@ -58,7 +58,7 @@
         </form>
 
         <h2>Change default boot mode</h2>
-        <p>Current boot mode: {{bootsate}}</p>
+        <p>Current boot mode: {{bootstate}}</p>
         <form action="{{ url_for('set_auto') }}" method="POST">
             <input type="submit" value="auto">
         </form>

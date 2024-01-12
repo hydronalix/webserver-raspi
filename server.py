@@ -28,11 +28,15 @@ def index():
     tmax = temp[0] | temp[1] << 8
     tlimp= temp[2] | temp[3] << 8
     tlightvalue = temp[4] 
-    bootstate = temp[7]
-    if tlightvalue == 255 :
+    tbootstate = temp[7]
+    if tlightvalue == 1 :
         lightstatus = "on"
     else:
         lightstatus = "off"
+    if tbootstate == 1 :
+        bootstate = "auto"
+    else:
+        bootstate = "manual"    
     return render_template('index.html', tmax=tmax, tlimp=tlimp, lightstatus=lightstatus, bootstate=bootstate)
 
 @app.route('/configure_pi', methods=['POST'])
@@ -82,7 +86,6 @@ def calibrate():
     bus.write_byte_data(0x3d, 6, 0)
     return 'Calibrating'
 
-
 @app.route('/light_on', methods=['POST'])
 def light_on():
     bus.write_byte_data(0x3d, 4, 1)
@@ -106,7 +109,7 @@ def set_auto():
     return 'set default boot state to auto'
 
 @app.route('/set_manual', methods=['POST'])
-def set_auto():
+def set_manual():
     bus.write_byte_data(0x3d, 7, 0)
     return 'set default boot state to manual'
 
