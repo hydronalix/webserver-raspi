@@ -24,15 +24,16 @@ def checkIP(ip):
 
 @app.route('/')
 def index():
-    temp = bus.read_i2c_block_data(0x3d, 0, 5)
+    temp = bus.read_i2c_block_data(0x3d, 0, 8)
     tmax = temp[0] | temp[1] << 8
     tlimp= temp[2] | temp[3] << 8
     tlightvalue = temp[4] 
+    bootstate = temp[7]
     if tlightvalue == 255 :
         lightstatus = "on"
     else:
         lightstatus = "off"
-    return render_template('index.html', tmax=tmax, tlimp=tlimp, lightstatus=lightstatus)
+    return render_template('index.html', tmax=tmax, tlimp=tlimp, lightstatus=lightstatus, bootstate=bootstate)
 
 @app.route('/configure_pi', methods=['POST'])
 def configure_pi():
@@ -98,6 +99,16 @@ def pair():
     time.sleep(2)
     bus.write_byte_data(0x3d, 5, 0)
     return 'attempting to pair, check transmitter to see if it was successful'
+
+@app.route('/set_auto', methods=['POST'])
+def set_auto():
+    bus.write_byte_data(0x3d, 7, 1)
+    return 'set default boot state to auto'
+
+@app.route('/set_manual', methods=['POST'])
+def set_auto():
+    bus.write_byte_data(0x3d, 7, 0)
+    return 'set default boot state to manual'
 
 if __name__ == '__main__':
     app.run(localip)
