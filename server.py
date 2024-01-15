@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request
 from flask import send_file
+from flask import redirect
+from flask import url_for
 import os
 import re
 import sys
 import smbus
 import struct
+import time
 
 bus = smbus.SMBus(1)
 
@@ -21,7 +24,20 @@ def checkIP(ip):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    temp = bus.read_i2c_block_data(0x3d, 0, 8)
+    tmax = temp[0] | temp[1] << 8
+    tlimp= temp[2] | temp[3] << 8
+    tlightvalue = temp[4] 
+    tbootstate = temp[7]
+    if tlightvalue == 1 :
+        lightstatus = "on"
+    else:
+        lightstatus = "off"
+    if tbootstate == 1 :
+        bootstate = "auto"
+    else:
+        bootstate = "manual"    
+    return render_template('index.html', tmax=tmax, tlimp=tlimp, lightstatus=lightstatus, bootstate=bootstate)
 
 @app.route('/configure_pi', methods=['POST'])
 def configure_pi():
@@ -32,7 +48,7 @@ def configure_pi():
     
     #formatting bash command
     text = ' ' + ipstring + ' ' + gsipstring + ' ' + hostname
-    cmd = 'sudo sh flashpi.sh ' + text
+    cmd = 'sudo bash flashpi ' + text
 
     #debug
     print("DEBUG: Command is " + cmd)
@@ -59,11 +75,44 @@ def configure_throttle():
         return 'bad throttle max / limp values'
 
 @app.route('/download')
-def downloadFile():
+def download():
     path = "lawnmower.BIN"
     return send_file(path, as_attachment=True)
+
+@app.route('/calibrate', methods=['POST'])
+def calibrate():
+    bus.write_byte_data(0x3d, 6, 1)
+    time.sleep(2)
+    bus.write_byte_data(0x3d, 6, 0)
+    return 'Calibrating'
+
+@app.route('/light_on', methods=['POST'])
+def light_on():
+    bus.write_byte_data(0x3d, 4, 1)
+    return 'successfully turned lights on'
+
+@app.route('/light_off', methods=['POST'])
+def light_off():
+    bus.write_byte_data(0x3d, 4, 0)
+    return 'successfully turned lights off'
+
+@app.route('/pair', methods=['POST'])
+def pair():
+    bus.write_byte_data(0x3d, 5, 1)
+    time.sleep(2)
+    bus.write_byte_data(0x3d, 5, 0)
+    return 'attempting to pair, check transmitter to see if it was successful'
+
+@app.route('/set_auto', methods=['POST'])
+def set_auto():
+    bus.write_byte_data(0x3d, 7, 1)
+    return 'set default boot state to auto'
+
+@app.route('/set_manual', methods=['POST'])
+def set_manual():
+    bus.write_byte_data(0x3d, 7, 0)
+    return 'set default boot state to manual'
 
 if __name__ == '__main__':
     app.run(localip)
    
-

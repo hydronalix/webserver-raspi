@@ -14,6 +14,12 @@
             <input type = "submit" value = submit>
         </form>
 
+        <br>
+        <h1>Current throttle lmits</h1>
+            <p>Maximum throttle PWM: {{tmax}}</p>
+            <p>Limp mode throttle PWM: {{tlimp}}</p>
+        <br>
+
         <h1>Configure throttle limits</h1>
         <form action="{{ url_for('configure_throttle') }}" method="POST">
             <p>Maximum throttle PWM</p>
@@ -22,12 +28,42 @@
             <input name = "limp">
             <input type="submit">
         </form>
-        
-        <h2>Click Here to Download Telem Data (beta!) </h2>
         <br>
+
+        <h1>Calibrate throttle</h1>
+        <form action="{{ url_for('calibrate') }}" method="POST">
+		<input type="submit" value="Calibrate">
+        </form>
+        <br>
+
+        <!-- <h2>Click Here to Download Telem Data (beta!) </h2>
         <form>
             <input type="button" onclick="window.location.href='http://192.168.100.101:5000/download';" value="Download" />
         </form>
+        <br> -->
 
+        <h2>Toggle Lights</h2>
+        <p>Current light status: {{lightstatus}}</p>
+        <form action="{{ url_for('light_on') }}" method="POST">
+		<input type="submit" value="on">
+        </form>
+	<form action="{{ url_for('light_off') }}" method="POST">
+		<input type="submit" value="off">
+        </form>
+
+
+        <h2>Pair Transmitter</h2>
+        <form action="{{ url_for('pair') }}" method="POST">
+		<input type="submit" value="Pair">
+        </form>
+
+        <h2>Change default boot mode</h2>
+        <p>Current boot mode: {{bootstate}}</p>
+        <form action="{{ url_for('set_auto') }}" method="POST">
+            <input type="submit" value="auto">
+        </form>
+        <form action="{{ url_for('set_manual') }}" method="POST">
+            <input type="submit" value="manual">
+        </form>
     </body>
 </html>
