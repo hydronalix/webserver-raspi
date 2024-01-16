@@ -45,16 +45,16 @@
         <h2>Toggle Lights</h2>
         <p>Current light status: {{lightstatus}}</p>
         <form action="{{ url_for('light_on') }}" method="POST">
-		<input type="submit" value="on">
+		    <input type="submit" value="on">
         </form>
-	<form action="{{ url_for('light_off') }}" method="POST">
-		<input type="submit" value="off">
+	    <form action="{{ url_for('light_off') }}" method="POST">
+		    <input type="submit" value="off">
         </form>
 
 
         <h2>Pair Transmitter</h2>
         <form action="{{ url_for('pair') }}" method="POST">
-		<input type="submit" value="Pair">
+		    <input type="submit" value="Pair">
         </form>
 
         <h2>Change default boot mode</h2>

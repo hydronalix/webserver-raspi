@@ -22,7 +22,7 @@ def checkIP(ip):
     else: 
         return False
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def index():
     temp = bus.read_i2c_block_data(0x3d, 0, 8)
     tmax = temp[0] | temp[1] << 8
@@ -56,9 +56,11 @@ def configure_pi():
     #running command 
     if checkIP(ipstring) == True and checkIP(gsipstring) == True:
         os.system(cmd)
-        return 'Success!'
+        statement = "Successfully configured pi"
+        return render_template('landing.html', statement=statement)
     else:
-        return 'Failed due to invalid IP address (make sure to enter in the form xxx.xxx.xxx.xxx)'
+        statement = "Failed due to invalid IP address (make sure to enter in the form xxx.xxx.xxx.xxx)"
+        return render_template('landing.html', statement=statement)
             
 @app.route('/configure_throttle', methods=['POST'])
 def configure_throttle():
@@ -70,9 +72,11 @@ def configure_throttle():
     if (1500 <= thrmax <= 2200) and (1500 <= limp <= 2200) and (limp < thrmax) :
         bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
         # y'know, above is kinda hardcoded and sketchy but we're going fast here
-        return 'successfully wrote new throttle max / limp values'
+        statement = "successfully wrote new throttle max / limp values"
+        return render_template('landing.html', statement=statement)
     else: 
-        return 'bad throttle max / limp values'
+        statement = "bad throttle max / limp values"
+        return render_template('landing.html', statement=statement)
 
 @app.route('/download')
 def download():
@@ -84,34 +88,40 @@ def calibrate():
     bus.write_byte_data(0x3d, 6, 1)
     time.sleep(2)
     bus.write_byte_data(0x3d, 6, 0)
-    return 'Calibrating'
+    statement = "Calibrating"
+    return render_template('landing.html', statement=statement)
 
 @app.route('/light_on', methods=['POST'])
 def light_on():
-    bus.write_byte_data(0x3d, 4, 1)
-    return 'successfully turned lights on'
+    bus.write_byte_data(0x3d, 4, 1) 
+    statement = "successfully turned lights on"
+    return render_template('landing.html', statement=statement)
 
 @app.route('/light_off', methods=['POST'])
 def light_off():
     bus.write_byte_data(0x3d, 4, 0)
-    return 'successfully turned lights off'
+    statement = "successfully turned lights off"
+    return render_template('landing.html', statement=statement)
 
 @app.route('/pair', methods=['POST'])
 def pair():
     bus.write_byte_data(0x3d, 5, 1)
     time.sleep(2)
     bus.write_byte_data(0x3d, 5, 0)
-    return 'attempting to pair, check transmitter to see if it was successful'
+    statement = "attempting to pair, check transmitter to see if it was successful"
+    return render_template('landing.html', statement=statement)
 
 @app.route('/set_auto', methods=['POST'])
 def set_auto():
     bus.write_byte_data(0x3d, 7, 1)
-    return 'set default boot state to auto'
+    statement = "set default boot state to auto"
+    return render_template('landing.html', statement=statement)
 
 @app.route('/set_manual', methods=['POST'])
 def set_manual():
     bus.write_byte_data(0x3d, 7, 0)
-    return 'set default boot state to manual'
+    statement = "set default boot state to manual"
+    return render_template('landing.html', statement=statement)
 
 if __name__ == '__main__':
     app.run(localip)
