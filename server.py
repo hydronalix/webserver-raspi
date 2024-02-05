@@ -62,6 +62,39 @@ def configure_pi():
         statement = "Failed due to invalid IP address (make sure to enter in the form xxx.xxx.xxx.xxx)"
         return render_template('landing.html', statement=statement)
             
+@app.route('/amy_throttle', methods=['POST'])
+def amy_throttle():
+    thrmax = 1850
+    limp = 1750
+    tbytes = thrmax.to_bytes(2, 'little') 
+    lbytes = limp.to_bytes(2, 'little') 
+
+    bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
+    statement = "successfully wrote Amy throttle max / limp values"
+    return render_template('landing.html', statement=statement)
+
+@app.route('/emily_throttle', methods=['POST'])
+def emily_throttle():
+    thrmax = 2000
+    limp = 1750
+    tbytes = thrmax.to_bytes(2, 'little') 
+    lbytes = limp.to_bytes(2, 'little') 
+
+    bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
+    statement = "successfully wrote Emily throttle max / limp values"
+    return render_template('landing.html', statement=statement)
+
+@app.route('/reckless_throttle', methods=['POST'])
+def reckless_throttle():
+    thrmax = 1805
+    limp = 1750
+    tbytes = thrmax.to_bytes(2, 'little') 
+    lbytes = limp.to_bytes(2, 'little') 
+
+    bus.write_i2c_block_data(0x3d, 0, list(tbytes) + list(lbytes))
+    statement = "successfully wrote Reckless throttle max / limp values"
+    return render_template('landing.html', statement=statement)
+
 @app.route('/configure_throttle', methods=['POST'])
 def configure_throttle():
     thrmax = int(request.form['thrmax'])
