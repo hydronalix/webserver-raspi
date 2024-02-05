@@ -1,40 +1,71 @@
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+    </head>
     <body>
-    <p> webserver functionality still in beta! not all things have been implemented! </p>
-
-        <h1>Configure RaspPi</h1>
+        <h2>Configure RaspPi</h2>
         <form action="{{ url_for('configure_pi') }}" method="POST">
             <p>Enter in AP IP</p>
-            <input name = "ipstring">
+            <div class="group">
+                <input type = "text" name = "ipstring" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>X.X.X.X</label>
+            </div>
             <p>Enter in GS IP</p>
-            <input name = "gsipstring">
+            <div class="group">
+                <input type = "text" name = "gsipstring" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>X.X.X.X</label>
+            </div>
             <p>Enter in Hostname</p>
-            <input name = "hostname">
-            <br>
-            <input type = "submit" value = submit>
+            <div class="group">
+                <input type = "text" name = "hostname" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Name</label>
+            </div>
+            <input type = "submit" value = Submit>
         </form>
 
-        <br>
-        <h1>Current throttle lmits</h1>
+        <h2>Current throttle lmits</h2>
             <p>Maximum throttle PWM: {{tmax}}</p>
             <p>Limp mode throttle PWM: {{tlimp}}</p>
-        <br>
 
-        <h1>Configure throttle limits</h1>
+        <h2>Configure throttle limits</h2>
+        <p>Preset options:</p>
+        <form action="{{ url_for('amy_throttle') }}" method="POST">
+            <input type="submit" value="Amy">
+        </form>
+        <form action="{{ url_for('emily_throttle') }}" method="POST">
+            <input type="submit" value="Emily">
+        </form>
+        <form action="{{ url_for('reckless_throttle') }}" method="POST">
+            <input type="submit" value="Reckless">
+        </form>
         <form action="{{ url_for('configure_throttle') }}" method="POST">
             <p>Maximum throttle PWM</p>
-            <input name = "thrmax">
+            <div class="group">
+                <input type = "text" name = "thrmax" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>1500-2200</label>
+            </div>
             <p>Limp mode throttle PWM</p>
-            <input name = "limp">
+            <div class="group">
+                <input type = "text" name = "limp" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>1500-2200</label>
+            </div>
             <input type="submit">
         </form>
-        <br>
 
-        <h1>Calibrate throttle</h1>
+        <h2>Calibrate throttle</h2>
         <form action="{{ url_for('calibrate') }}" method="POST">
 		<input type="submit" value="Calibrate">
         </form>
-        <br>
 
         <!-- <h2>Click Here to Download Telem Data (beta!) </h2>
         <form>
@@ -45,12 +76,11 @@
         <h2>Toggle Lights</h2>
         <p>Current light status: {{lightstatus}}</p>
         <form action="{{ url_for('light_on') }}" method="POST">
-		    <input type="submit" value="on">
+		    <input type="submit" value="On">
         </form>
 	    <form action="{{ url_for('light_off') }}" method="POST">
-		    <input type="submit" value="off">
+		    <input type="submit" value="Off">
         </form>
-
 
         <h2>Pair Transmitter</h2>
         <form action="{{ url_for('pair') }}" method="POST">
@@ -60,10 +90,10 @@
         <h2>Change default boot mode</h2>
         <p>Current boot mode: {{bootstate}}</p>
         <form action="{{ url_for('set_auto') }}" method="POST">
-            <input type="submit" value="auto">
+            <input type="submit" value="Auto">
         </form>
         <form action="{{ url_for('set_manual') }}" method="POST">
-            <input type="submit" value="manual">
+            <input type="submit" value="Manual">
         </form>
     </body>
 </html>
